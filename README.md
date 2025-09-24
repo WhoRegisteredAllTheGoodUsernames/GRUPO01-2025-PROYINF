@@ -14,9 +14,9 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/WhoReg
 
 ## Videos
 
-* [Video presentación cliente](https://www.youtube.com)
-* [Video presentación avance 1](https://www.youtube.com/)
-* Etc ...
+* [Video presentación cliente](https://aula.usm.cl/mod/resource/view.php?id=6926137)
+<!--* [Video presentación avance 1](https://www.youtube.com/)
+* Etc ...-->
 
 ## Aspectos técnicos relevantes
 
