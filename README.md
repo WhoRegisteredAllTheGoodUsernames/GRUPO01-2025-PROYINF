@@ -20,4 +20,4 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/WhoReg
 
 ## Aspectos técnicos relevantes
 
-_Todo aspecto relevante cuando para poder usar el proyecto o consideraciones del proyecto base a ser entregado_
+El actual proyecto se encuentra en la carpeta ```./proyecto``` junto con el README que contiene las instrucciones para levantarlo.
