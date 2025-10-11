@@ -1,0 +1,29 @@
+import {back_dir} from '../backend';
+
+const act = back_dir + "/registro";
+
+export default function Registro(){
+
+	return (
+	<div id="registro">
+		<form action={act} method="post">
+		<label for="rut">Rut</label>
+		<input required name="rut"/>
+		<label for="primer-nombre">Primer nombre</label>
+		<input required name="primer-nombre"/>
+		<label for="segundo-nombre">Segundo nombre</label>
+		<input required name="segundo-nombre"/>
+		<label for="apellido-materno">Apellido materno</label>
+		<input required name="apellido-materno"/>
+		<label for="apellido-paterno">Apellido paterno</label>
+		<input required name="apellido-paterno"/>
+		<label for="rol">Rol</label>
+		<input name="rol[]" type="radio" value="Cliente"/>
+		<input name="rol[]" type="radio" value="Bancario"/>
+		<label for="fecha-nacimiento">Fecha de nacimeinto</label>
+		<input required name="fecha-nacimiento" type="date"/>
+		<input type="submit" value="Registrarse"/>
+		</form>
+	</div>
+	);
+}

@@ -1,24 +1,26 @@
-import logo from './logo.svg';
+import Registro from './vistas/Registro';
+import Index from './vistas/Index';
+import Login from './vistas/Login';
+import Simulacion from './vistas/Simulacion';
+import ModScoring from './vistas/ModScoring';
+//import logo from './logo.svg';
 import './App.css';
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route} from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+	  <Router>
+		  <Routes>
+			  <Route exact path="/" element={<Index />} />
+			  <Route path="/registro" element={<Registro />} />
+			  <Route path="/login" element={<Login />} />
+			  <Route path="/simulacion" element={<Simulacion />} />
+			  <Route path="/mod_scoring" element={<ModScoring />} />
+		  </Routes>
+	  </Router>
   );
 }
 
