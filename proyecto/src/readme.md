@@ -1,3 +1,6 @@
+### 📁 Dentro de `/src`
+
+```bash
 src/
 ├── controllers/   # lógica de negocio (maneja requests)
 ├── db/            # conexión a la base de datos (pg o Sequelize, etc.)
