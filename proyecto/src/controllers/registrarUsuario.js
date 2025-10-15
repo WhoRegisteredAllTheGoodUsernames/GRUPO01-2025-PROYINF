@@ -1,14 +1,14 @@
 pool = require("../db/db");
 sql = require("../db/crearUsuarios");
 
-function registrarUsuario(data){
+async function registrarUsuario(data){
 	data.tipo = data.tipo[0];
-	pool.query(sql["crearUser"], Object.values(data));
+	await pool.query(sql["crearUser"], Object.values(data));
 
 	if (data.tipo == "C"){
-		pool.query(sql["crearCliente"], [data.rut]);
+		await pool.query(sql["crearCliente"], [data.rut]);
 	} else if (data.tipo == "B"){
-		pool.query(sql["crearBancario"], [data.rut, "Funcionario"]);
+		await pool.query(sql["crearBancario"], [data.rut, "Funcionario"]);
 	}
 }
 
