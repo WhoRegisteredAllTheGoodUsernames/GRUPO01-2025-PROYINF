@@ -21,4 +21,8 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/WhoReg
 
 ## Aspectos técnicos relevantes
 
-El actual proyecto se encuentra en la carpeta ```./proyecto``` junto con el README que contiene las instrucciones para levantarlo.
+El actual proyecto se encuentra en las carpetas ```./proyecto``` (backend) y ```./frontend``` (frontend), y en cada una se encuentra el README que contiene las instrucciones para levantarlos.
+
+Nótese que al ejecutar la vista de desarrollo (con los comandos en el README de cada uno), el backend se tiene que levantar en ```localhost:3000``` y el frontend en ```localhost:3001```. Los puertos están fijos para ambos, pero el host puede variar de plataforma a plataforma, por lo que se tienen que modificar las opciones para forzarlo si es necesario.
+
+En caso de querer usar distintos hosts o puertos, cambiar los archivos ```./frontend/src/backend.js``` (con los datos para que el frontend se conecte al backend) y ```./proyecto/src/routes/frontend.js``` (para que el backend se conecte con el frontend).
