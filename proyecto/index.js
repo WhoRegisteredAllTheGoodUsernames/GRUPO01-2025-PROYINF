@@ -3,6 +3,11 @@ const app = express();
 
 const port = 3000;
 
+
+//para poder usar todo tipo de formularios:
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 const pool = require('./src/db/db'); // Importar la conexión
 const iniciarMiddleware = require('./src/middlewares/iniciarMiddleware')
 const crearTablas = require('./src/db/crearTablas')

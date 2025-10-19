@@ -73,6 +73,19 @@ CREATE TABLE IF NOT EXISTS "user" (
     "fecha-nacimiento" date NOT NULL
 );
 
+-- Agregar la tabla simulacion, ya con el seguro listo
+CREATE TABLE IF NOT EXISTS "simulacion-prestamo" (
+    id integer NOT NULL,
+    fecha date NOT NULL,
+    monto integer NOT NULL,
+    "numero-cuotas" integer NOT NULL,
+    "tasa-interes" numeric NOT NULL,
+    "scoring-requerido" integer NOT NULL,
+    "rut-cliente" integer NOT NULL,
+    "id-funcion-crediticia" integer NOT NULL,
+    "seguro" character varying(50) NOT NULL
+);
+
 ALTER TABLE "archivos-cliente" DROP CONSTRAINT IF EXISTS archivos_cliente_unique CASCADE;
 ALTER TABLE ONLY "archivos-cliente"
     ADD CONSTRAINT archivos_cliente_unique UNIQUE ("rut-cliente", "ruta-archivo");
@@ -140,3 +153,29 @@ ALTER TABLE ONLY prestamo
 ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_funcion_crediticia_fk CASCADE;
 ALTER TABLE ONLY prestamo
     ADD CONSTRAINT prestamo_funcion_crediticia_fk FOREIGN KEY ("id-funcion-crediticia") REFERENCES "funcion-crediticia"(id);
+
+--Constraints para la tabla de simulaciones
+ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_pk CASCADE;
+ALTER TABLE ONLY "simulacion-prestamo"
+    ADD CONSTRAINT simulacion_prestamo_pk PRIMARY KEY (id);
+
+ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_cliente_fk CASCADE;
+ALTER TABLE ONLY "simulacion-prestamo"
+    ADD CONSTRAINT simulacion_prestamo_cliente_fk FOREIGN KEY ("rut-cliente") REFERENCES cliente(rut);
+
+ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_funcion_crediticia_fk CASCADE;
+ALTER TABLE ONLY "simulacion-prestamo"
+    ADD CONSTRAINT simulacion_prestamo_funcion_crediticia_fk FOREIGN KEY ("id-funcion-crediticia") REFERENCES "funcion-crediticia"(id);
+
+-- Añadir el atributo seguro a la tabla de prestamos. Ojo sólo si no existe ya pa evitar errores
+ALTER TABLE prestamo
+ADD COLUMN IF NOT EXISTS "seguro" character varying(50) NOT NULL DEFAULT 'Sin seguro';
+
+
+-- Con esto vamos a permitir null en las claves foráneas de la tabla simulación prestamo
+-- Esto lo hago para poder falsear los datos del id cliente e id funcion crediticia
+-- Y así poder simular la 'simulación' de créditos.
+-- Luego habrá que revertirlo
+ALTER TABLE "simulacion-prestamo"
+ALTER COLUMN "rut-cliente" DROP NOT NULL,
+ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL;
