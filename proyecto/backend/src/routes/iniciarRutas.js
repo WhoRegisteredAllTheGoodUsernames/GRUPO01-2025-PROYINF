@@ -1,6 +1,6 @@
 const frontDir = require('./frontend');
 const registrarUsuario = require('../controllers/registrarUsuario');
-const registrarSimulacion = require('../controllers/registrarSimulacion');
+const registrarSimulacion = require('../controllers/ingresarSimulacion');
 
 function iniciarRutas(app) {
   app.post('/registro', (req, res) => {
