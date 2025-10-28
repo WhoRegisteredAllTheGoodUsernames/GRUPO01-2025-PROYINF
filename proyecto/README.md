@@ -17,9 +17,9 @@ Este es un ejemplo de una aplicación Node.js usando Express, Docker y PostgreSQ
 
 Debe tener docker-desktop abierto en todo momento, o el servicio. Ejecutar en terminal:
 
-### 1. Deben navegar hasta la carpeta `./proyecto`
+### 2. Deben navegar hasta la carpeta `./proyecto` (aquí mismo)
 
-### 2. Les instalará las dependencias. Se suele demorar un poco la primera vez con esto levantan el proyecto:
+### 3. Les instalará las dependencias. Se suele demorar un poco la primera vez con esto levantan el proyecto:
 
 `$ docker compose up --build`
 
