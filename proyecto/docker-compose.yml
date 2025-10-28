@@ -1,7 +1,17 @@
 version: '3.8'
 services:
-  app:
-    build: .
+  frontend:
+    build: ./frontend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/:/app/frontend
+      - /app/frontend/node_modules
+
+  backend:
+    build: ./backend
     ports:
       - "3000:3000"
     environment:
@@ -13,8 +23,8 @@ services:
     depends_on:
       - postgres_db
     volumes:
-      - ./:/app
-      - /app/node_modules
+      - ./backend:/app/backend
+      - /app/backend/node_modules
 
   postgres_db:
     image: postgres:15-alpine
