@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS "user" (
 
 -- Agregar la tabla simulacion, ya con el seguro listo
 CREATE TABLE IF NOT EXISTS "simulacion-prestamo" (
-    id integer NOT NULL,
+    id SERIAL PRIMARY KEY,
     fecha date NOT NULL,
     monto integer NOT NULL,
     "numero-cuotas" integer NOT NULL,
@@ -154,10 +154,11 @@ ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_funcion_crediticia_fk CA
 ALTER TABLE ONLY prestamo
     ADD CONSTRAINT prestamo_funcion_crediticia_fk FOREIGN KEY ("id-funcion-crediticia") REFERENCES "funcion-crediticia"(id);
 
---Constraints para la tabla de simulaciones
-ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_pk CASCADE;
-ALTER TABLE ONLY "simulacion-prestamo"
-    ADD CONSTRAINT simulacion_prestamo_pk PRIMARY KEY (id);
+
+--Constraints para la tabla de simulaciones. Comentado porque ahora se agrega automarica la pk
+-- ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_pk CASCADE;
+-- ALTER TABLE ONLY "simulacion-prestamo"
+--     ADD CONSTRAINT simulacion_prestamo_pk PRIMARY KEY (id);
 
 ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_cliente_fk CASCADE;
 ALTER TABLE ONLY "simulacion-prestamo"
@@ -172,10 +173,10 @@ ALTER TABLE prestamo
 ADD COLUMN IF NOT EXISTS "seguro" character varying(50) NOT NULL DEFAULT 'Sin seguro';
 
 
--- Con esto vamos a permitir null en las claves foráneas de la tabla simulación prestamo
--- Esto lo hago para poder falsear los datos del id cliente e id funcion crediticia
--- Y así poder simular la 'simulación' de créditos.
--- Luego habrá que revertirlo
+
+-- Esto se borrará después, pero es mientras no tengamos el webeo del scoring implementado
+
 ALTER TABLE "simulacion-prestamo"
-ALTER COLUMN "rut-cliente" DROP NOT NULL,
-ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL;
+ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL,
+ALTER COLUMN "scoring-requerido" DROP NOT NULL;
+
