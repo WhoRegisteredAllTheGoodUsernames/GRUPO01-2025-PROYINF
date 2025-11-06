@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS "funcion-crediticia" (
     "fecha-modificacion" date NOT NULL,
     funcion character varying NOT NULL,
     "rut-bancario-modificador" integer NOT NULL,
-    id integer NOT NULL
+    id SERIAL PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "pago-cuota" (
