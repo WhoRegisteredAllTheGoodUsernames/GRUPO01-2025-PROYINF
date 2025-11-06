@@ -63,6 +63,9 @@ const valoresCualitativos = {
 }
 
 // Se utilizan sólo las llaves, para ver si se soporta la variable
+// Se podría agregar una estructura con las descripciones y tipos,
+// 	para pasarlas al frontend y mostrar la lista de variables soportadas
+// 	dinámicamente. Haría más limpia la expansión
 const variablesPrestamo = {
 	"monto": 0,
 	"numero-cuotas": 0,
