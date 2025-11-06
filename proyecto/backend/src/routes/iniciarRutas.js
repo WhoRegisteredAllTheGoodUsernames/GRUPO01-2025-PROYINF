@@ -2,6 +2,7 @@ const frontDir = require('./frontend');
 const registrarUsuario = require('../controllers/registrarUsuario');
 const registrarSimulacion = require('../controllers/registrarSimulacion');
 const resultadoSimulacion = require('../controllers/resultadoSimulacion');
+const { obtenerUltimoScoring, registrarScoring } = require('../controllers/aplicarScoring'); 
 const { login, logout } = require('../controllers/loginController');
 
 function iniciarRutas(app) {
@@ -34,9 +35,20 @@ function iniciarRutas(app) {
 	// ver resultados de simulación
 	app.get('/resultadoSimulacion', resultadoSimulacion);
 
-	app.post('/mod_scoring', (req, res) => {
-		console.log(req.body);
+	app.post('/mod_scoring', async (req, res) => {
+		const fechaHora = new Date();
+		if (!req.session.user || req.session.user.tipo != "B"){
+			res.status(401).send("Tiene que iniciar sesión o no puede acceder al recurso");
+			return;
+		}
+
+		await registrarScoring([req.body["funcion"], fechaHora, req.session.user.rut]);
 		res.redirect(frontDir);
+	});
+	
+	app.get('/mod_scoring', async (req, res) => {
+		const func = await obtenerUltimoScoring();
+		res.send(func["funcion"]);
 	});
 }
 
