@@ -21,11 +21,6 @@ async function registrarSimulacion(req, res) {
     const valorCuota = (monto * (1 + tasa_interes * numero_cuotas / 12)) / numero_cuotas;
     const impuestos = monto * 0.02;
     const gastosNotariales = 50000;
-    const totalCredito = monto + impuestos + gastosNotariales;
-<<<<<<< HEAD
-    //Notar que aquí se tendrá que usar la función!!!!!!
-    const scoring_requerido = 60;
-=======
 	const functScoring = await scoring.obtenerUltimoScoring();
     const scoring_requerido = scoring.aplicarScoring(functScoring["funcion"], {
 		"monto": monto,
@@ -37,7 +32,6 @@ async function registrarSimulacion(req, res) {
 	//datosScoringCliente["monto"] = monto;
 	//datosScoringCliente["seguro"] = seguro;
 	//const scoringCliente = scoring.aplicarScoringCliente(datosScoringCliente);
->>>>>>> scoring
 
     const resultado = {
       fecha,
