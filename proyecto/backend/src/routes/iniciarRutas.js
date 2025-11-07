@@ -35,7 +35,12 @@ function iniciarRutas(app) {
 	// Obtener última función de scoring
 	app.get('/mod_scoring', async (req, res) => {
 		const func = await obtenerUltimoScoring();
-		res.send(func["funcion"]);
+		
+		if (func == {}){
+			res.send("");
+		} else {
+			res.send(func["funcion"]);
+		}
 	});
 }
 

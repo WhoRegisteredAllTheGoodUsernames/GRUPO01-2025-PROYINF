@@ -8,15 +8,17 @@ const utilsTipos = require("../utils/verificarTipos");
 const descFactoresRegEx = new RegExp(/([+-]?)([0-9.]*)([a-zA-Z_]+)?/, "g"); 
 
 function descomponerFuncion(funct){
-	const componentes = {};
+	var componentes = {};
 	// El arreglo es de la forma:
 	// ["matcheo1", "grupo1 en matcheo1", "grupo2 en matcheo1", "grupo3 en matcheo1",
 	// "matcheo2" ...]
-	const factoresGrupos = [...funct.matchAll(descFactoresRegEx)].slice(0, -3);
-	for (let i = 0; i < factoresGrupos.length(); i+=4){
-		const signo = factoresGrupos[i+1],
-			paramStr = factoresGrupos[i+2] ?? "1",
-			variableStr = factoresGrupos[i+3];
+	const factoresGrupos = [...funct.matchAll(descFactoresRegEx)];
+	for (const match of factoresGrupos){
+		if (match[0] == "") break;
+
+		const signo = match[1],
+			paramStr = match[2] ?? "1",
+			variableStr = match[3];
 		
 		const param = Number(signo + paramStr);
 
@@ -31,7 +33,7 @@ function descomponerFuncion(funct){
 		}
 	}
 
-	componentes["constante"] ?? 0;
+	componentes["constante"] ??= 0;
 
 	return componentes;
 }
@@ -67,14 +69,16 @@ function obtenerSumaFuncion(funct, valores){
 async function obtenerUltimoScoring(){
 	try {
 		const result = await pool.query(sql["obtenerScoring"]);
+
+		if (result.rows.length == 0) return {}
+
 		return result.rows[0];
 	} catch (err) {
 		console.error(err);
 	}
 }
 
-async function aplicarScoring(valores){
-	const funct = await obtenerUltimoScoring()["funcion"];
+function aplicarScoring(funct, valores){
 	const functDesc = descomponerFuncion(funct);
 	return obtenerSumaFuncion(functDesc, valores);
 }

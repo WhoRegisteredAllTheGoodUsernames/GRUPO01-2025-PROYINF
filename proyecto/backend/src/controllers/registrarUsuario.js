@@ -1,6 +1,6 @@
 // src/controllers/registrarUsuario.js
 const pool = require("../db/db");
-const sql = require("../db/crearUsuarios");
+const sql = require("../db/usuarios");
 const bcrypt = require("bcrypt");
 
 async function registrarUsuario(data) {
