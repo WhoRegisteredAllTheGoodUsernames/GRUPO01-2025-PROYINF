@@ -75,10 +75,19 @@ async function login(req, res) {
 
     // Si venía de una simulación pendiente, redirigir ahí
     const destino = req.session.redirectAfterLogin || '/';
-    // limpiar la variable de redirección si existe
     if (req.session.redirectAfterLogin) delete req.session.redirectAfterLogin;
 
-    return res.redirect(destino);
+    return res.json({
+      ok: true,
+      redirect: destino,
+      user: {
+        rut: userRow.rut,
+        primer_nombre: userRow['primer-nombre'],
+        apellido_paterno: userRow['apellido-paterno'],
+        tipo: userRow.tipo
+      }
+    });
+
   } catch (error) {
     console.error('Error en login:', error);
     return res.status(500).send('Error en el servidor');

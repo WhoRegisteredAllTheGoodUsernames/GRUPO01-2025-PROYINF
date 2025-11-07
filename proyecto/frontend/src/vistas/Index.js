@@ -15,6 +15,8 @@ export default function Index(){
 	</div>
 	);
 } ESTO ESTABA EN UN PRINCIPIO PERO ME DIO MIEDITO BORRARLO XD */ 
+
+import { Link } from "react-router-dom";
 import logo from '../img/logo.png';
 const dirs = [
   	{path: "simulacion", label: "Simular préstamo"},
@@ -67,7 +69,7 @@ export default function Index() {
 				
 				{/* links */}
 				<div style={{display: "flex", gap: "clamp(15px, 3vw, 20px)", alignItems: "center", flexWrap: "wrap"}}>
-					<a
+					{/*<a
 						href="/registro"
 						style={{
 							color: "white",
@@ -75,11 +77,21 @@ export default function Index() {
 							fontSize: "clamp(14px, 2vw, 17px)",
               				whiteSpace: "nowrap",
 						}}
-					>
-					Registrarse
-					</a>
+					></a>*/}
 					
-					<a
+					<Link
+						to="/registro"
+						style={{
+							color: "white",
+							textDecoration: "none",
+							fontSize: "clamp(14px, 2vw, 17px)",
+							whiteSpace: "nowrap",
+						}}
+						>
+						Registrarse
+					</Link>
+					
+					{/* <a
 						href="/login"
 						style={{
 							color: "white",
@@ -88,9 +100,22 @@ export default function Index() {
 							fontSize: "clamp(14px, 2vw, 17px)",
               				whiteSpace: "nowrap",
 						}}
+					> </a>*/}
+
+					<Link
+						to="/login"
+						style={{
+						color: "white",
+						textDecoration: "none",
+						fontWeight: "bold",
+						fontSize: "clamp(14px, 2vw, 17px)",
+						whiteSpace: "nowrap",
+						}}
 					>
 					Iniciar sesión
-					</a>
+					</Link>
+				
+					
 				</div>
 			</header>
 
