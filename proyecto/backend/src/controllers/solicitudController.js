@@ -1,6 +1,7 @@
 // src/controllers/solicitudController.js
 const pool = require('../db/db');
 const scoring = require('./aplicarScoring');
+const modeloScoring = require('../models/scoring');
 
 /**
  * Controlador para mostrar los datos de una simulación y permitir iniciar la solicitud.
@@ -211,6 +212,18 @@ const procesarConfirmacion = async (req, res) => {
     }
 
     const simulacion = sim.rows[0];
+    // 🧩 Normalizar valores cualitativos (seguro, rubro, etc.) usando el mismo diccionario global
+    const valoresCualitativos = modeloScoring.valoresCualitativos;
+
+    // 🔹 Normalizar seguro
+    console.log("Simulación cargada desde BD:", simulacion);
+    let seguroNormalizado = simulacion.seguro;
+    const dicSeguro = valoresCualitativos["seguro"];
+
+    if (dicSeguro && dicSeguro[seguroNormalizado] === undefined) {
+      console.warn(`⚠️ Valor de seguro no reconocido ("${seguroNormalizado}"), se guardará como "Nada".`);
+      if (dicSeguro["Nada"] !== undefined) seguroNormalizado = "Nada";
+    }
 
     const cliente = await pool.query('SELECT scoring FROM cliente WHERE rut = $1', [rutCliente]);
     const scoringCliente = cliente.rows[0].scoring;
@@ -229,13 +242,18 @@ const procesarConfirmacion = async (req, res) => {
     );
 
     // 3️⃣ Insertar nuevo registro en la tabla prestamo
-    await pool.query(
+    const insertResult = await pool.query(
       `INSERT INTO prestamo (
           fecha, monto, "numero-cuotas", "tasa-interes",
           "scoring-requerido", "scoring-cliente", "estado-aprobacion",
-          "estado-pago", "rut-cliente", "id-cuenta-destino", "id-funcion-crediticia", seguro
-       )
-       VALUES (NOW(), $1, $2, $3, $4, $5, $6, 'Pendiente', $7, 1, $8, $9)`,
+          "estado-pago", "rut-cliente", 
+          /* "id-cuenta-destino", */ 
+          "id-funcion-crediticia", seguro
+      )
+      VALUES (NOW(), $1, $2, $3, $4, $5, $6, 'Pendiente', $7, 
+              /* 1, */ 
+              $8, $9)
+      RETURNING *`, // 👈 esta línea es esencial
       [
         simulacion.monto,
         simulacion['numero-cuotas'],
@@ -244,27 +262,20 @@ const procesarConfirmacion = async (req, res) => {
         scoringCliente,
         estadoAprobacion,
         rutCliente,
+        /* valor eliminado: id de cuenta destino (antes era 1), */
         simulacion['id-funcion-crediticia'],
-        simulacion.seguro
+        seguroNormalizado
       ]
     );
 
+    const nuevoPrestamo = insertResult.rows[0];
+
     console.log(`💾 Registro insertado en tabla 'prestamo' con estado: ${estadoAprobacion}`);
 
-    // 4️⃣ Devolver resultado detallado
+    // 4️⃣ Devolver resultado desde la tabla prestamo
     res.status(200).json({
       message: `Solicitud procesada: ${estadoAprobacion}`,
-      detalles: {
-        idSimulacion,
-        rutCliente,
-        scoringCliente,
-        scoringRequerido,
-        monto: simulacion.monto,
-        cuotas: simulacion['numero-cuotas'],
-        tasa: simulacion['tasa-interes'],
-        seguro: simulacion.seguro,
-        estado: estadoAprobacion
-      }
+      prestamo: nuevoPrestamo
     });
 
   } catch (error) {

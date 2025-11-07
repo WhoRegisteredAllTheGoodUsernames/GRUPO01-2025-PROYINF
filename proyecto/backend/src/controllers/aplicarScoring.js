@@ -37,33 +37,44 @@ function descomponerFuncion(funct){
 	return componentes;
 }
 
-function obtenerSumaFuncion(funct, valores){
+function obtenerSumaFuncion(funct, valores) {
 	let acumulador = 0;
 
-	for (const [variable, param] of Object.entries(funct)){
-		if (variable == "constante"){
+	for (const [variable, param] of Object.entries(funct)) {
+		if (variable === "constante") {
 			acumulador += param;
 			continue;
 		}
 
 		let valor = valores[variable];
-		if (valor == undefined) throw `Falta el valor para la variable ${variable}`;
+		if (valor === undefined) throw `Falta el valor para la variable ${variable}`;
 
-		if (utilsTipos.esString(valor)){
-			const esCualitativa = scoring.valoresCualitativos[variable];
-			if (esCualitativa == undefined) throw `La variable ${variable} no es cualitativa`;
+		if (utilsTipos.esString(valor)) {
+			const cualitativa = scoring.valoresCualitativos[variable];
+			if (cualitativa === undefined)
+				throw `La variable ${variable} no es cualitativa`;
 
-			valor = esCualitativa[valor];
-			if (valor == undefined) throw `La variable ${variable} no admite el valor ${valor}`;
+			let valorMapeado = cualitativa[valor];
+
+			// 🧩 Si el valor no está en el diccionario, usar "Nada" como fallback
+			if (valorMapeado === undefined && cualitativa["Nada"] !== undefined) {
+				console.warn(`⚠️ Valor no reconocido para ${variable} ("${valor}"), se usará "Nada".`);
+				valorMapeado = cualitativa["Nada"];
+			}
+
+			if (valorMapeado === undefined)
+				throw `La variable ${variable} no admite el valor ${valor}`;
+
+			valor = valorMapeado;
 		}
-		
-		const aporte = param*valor;
 
+		const aporte = param * valor;
 		acumulador += aporte;
 	}
 
 	return acumulador;
 }
+
 
 async function obtenerUltimoScoring(){
 	try {

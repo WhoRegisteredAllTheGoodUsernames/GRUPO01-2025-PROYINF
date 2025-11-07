@@ -20,12 +20,12 @@ CREATE TABLE IF NOT EXISTS cliente (
     scoring integer DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS "cuentas-bancarias-usuario" (
-    id integer NOT NULL,
-    banco character varying(100) NOT NULL,
-    tipo_cuenta character varying(50) NOT NULL,
-    "rut-cliente" integer NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS "cuentas-bancarias-usuario" (
+--     id integer NOT NULL,
+--     banco character varying(100) NOT NULL,
+--     tipo_cuenta character varying(50) NOT NULL,
+--     "rut-cliente" integer NOT NULL
+-- );
 
 
 CREATE TABLE IF NOT EXISTS "funcion-crediticia" (
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS "prestamo" (
     "estado-aprobacion" character varying NOT NULL,
     "estado-pago" character varying(20) NOT NULL,
     "rut-cliente" integer NOT NULL,
-    "id-cuenta-destino" integer NOT NULL,
+    -- "id-cuenta-destino" integer NOT NULL,
     "id-funcion-crediticia" integer NOT NULL
 );
 
@@ -90,9 +90,9 @@ ALTER TABLE "archivos-cliente" DROP CONSTRAINT IF EXISTS archivos_cliente_unique
 ALTER TABLE ONLY "archivos-cliente"
     ADD CONSTRAINT archivos_cliente_unique UNIQUE ("rut-cliente", "ruta-archivo");
 
-ALTER TABLE "cuentas-bancarias-usuario" DROP CONSTRAINT IF EXISTS cuentas_bancarias_usuario_pk CASCADE;
-ALTER TABLE ONLY "cuentas-bancarias-usuario"
-    ADD CONSTRAINT cuentas_bancarias_usuario_pk PRIMARY KEY (id);
+-- ALTER TABLE "cuentas-bancarias-usuario" DROP CONSTRAINT IF EXISTS cuentas_bancarias_usuario_pk CASCADE;
+-- ALTER TABLE ONLY "cuentas-bancarias-usuario"
+--     ADD CONSTRAINT cuentas_bancarias_usuario_pk PRIMARY KEY (id);
 
 ALTER TABLE "funcion-crediticia" DROP CONSTRAINT IF EXISTS funcion_crediticia_pk CASCADE;
 ALTER TABLE ONLY "funcion-crediticia"
@@ -131,9 +131,9 @@ ALTER TABLE cliente DROP CONSTRAINT IF EXISTS cliente_user_fk CASCADE;
 ALTER TABLE ONLY cliente
     ADD CONSTRAINT cliente_user_fk FOREIGN KEY (rut) REFERENCES "user"(rut);
 
-ALTER TABLE "cuentas-bancarias-usuario" DROP CONSTRAINT IF EXISTS cuentas_bancarias_usuario_cliente_fk CASCADE;
-ALTER TABLE ONLY "cuentas-bancarias-usuario"
-    ADD CONSTRAINT cuentas_bancarias_usuario_cliente_fk FOREIGN KEY ("rut-cliente") REFERENCES cliente(rut);
+-- ALTER TABLE "cuentas-bancarias-usuario" DROP CONSTRAINT IF EXISTS cuentas_bancarias_usuario_cliente_fk CASCADE;
+-- ALTER TABLE ONLY "cuentas-bancarias-usuario"
+--     ADD CONSTRAINT cuentas_bancarias_usuario_cliente_fk FOREIGN KEY ("rut-cliente") REFERENCES cliente(rut);
 
 ALTER TABLE "funcion-crediticia" DROP CONSTRAINT IF EXISTS funcion_crediticia_bancario_fk CASCADE;
 ALTER TABLE ONLY "funcion-crediticia"
@@ -152,13 +152,6 @@ ALTER TABLE prestamo
 ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL,
 ALTER COLUMN "id-funcion-crediticia" SET DEFAULT -1;
 
---Lo mismo pero con el tema de las cuentas bancarias del cliente, como no están implementadas las dejé
--- comoatributo normal, sin ser FK, y por el momento les asigna -1 a todas nomás
-ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_cuentas_bancarias_usuario_fk;
-
-ALTER TABLE prestamo
-ALTER COLUMN "id-cuenta-destino" DROP NOT NULL,
-ALTER COLUMN "id-cuenta-destino" SET DEFAULT -1;
 
 --Fin del bloque a borrar
 
@@ -166,9 +159,9 @@ ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_cliente_fk CASCADE;
 ALTER TABLE ONLY prestamo
     ADD CONSTRAINT prestamo_cliente_fk FOREIGN KEY ("rut-cliente") REFERENCES cliente(rut);
 
-ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_cuentas_bancarias_usuario_fk CASCADE;
-ALTER TABLE ONLY prestamo
-    ADD CONSTRAINT prestamo_cuentas_bancarias_usuario_fk FOREIGN KEY ("id-cuenta-destino") REFERENCES "cuentas-bancarias-usuario"(id);
+-- ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_cuentas_bancarias_usuario_fk CASCADE;
+-- ALTER TABLE ONLY prestamo
+--     ADD CONSTRAINT prestamo_cuentas_bancarias_usuario_fk FOREIGN KEY ("id-cuenta-destino") REFERENCES "cuentas-bancarias-usuario"(id);
 
 ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_funcion_crediticia_fk CASCADE;
 ALTER TABLE ONLY prestamo

@@ -51,13 +51,14 @@ const scoringCliente = {
 // 	}
 const valoresCualitativos = {
 	"seguro": {
-		"Muerte": 1,
+		"Desgravamen": 1,
 		"Nada": 2,
 	},
 	"rubro": {
 		"Abogado": 1,
 		"Doctor": 2,
 		"Obrero": 3,
+		"Nada": 5,
 	},
 	"genero": {
 		"F": 1,
