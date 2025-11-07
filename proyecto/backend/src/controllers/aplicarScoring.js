@@ -17,9 +17,8 @@ function descomponerFuncion(funct){
 		if (match[0] == "") break;
 
 		const signo = match[1],
-			paramStr = match[2] ?? "1",
+			paramStr = match[2] ? match[2] : "1",
 			variableStr = match[3];
-		
 		const param = Number(signo + paramStr);
 
 		// Se asume que sólo hay 1 constante en la fórmula
