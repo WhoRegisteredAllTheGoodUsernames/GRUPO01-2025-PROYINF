@@ -29,12 +29,14 @@
 // 		"variable2": parametro2,
 // 		...
 // 	}
+// 	NOTA: Lo dejaré solo dependiente de los datos del cliente. Esto no afecta
+// 		cuando se llama la función que la aplica con más parámetros.
 const scoringCliente = {
 	"salario": 1,
 	"rubro": 1,
 	"genero": 1,
-	"monto": 1,
-	"seguro": 1,
+	//"monto": 1,
+	//"seguro": 1,
 };
 
 // Estructura:
