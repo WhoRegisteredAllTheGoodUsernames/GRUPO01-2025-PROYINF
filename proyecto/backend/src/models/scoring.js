@@ -30,9 +30,11 @@
 // 		...
 // 	}
 const scoringCliente = {
-	"salario": 0,
-	"rubro": 0,
-	"genero": 0,
+	"salario": 1,
+	"rubro": 1,
+	"genero": 1,
+	"monto": 1,
+	"seguro": 1,
 };
 
 // Estructura:
@@ -47,18 +49,18 @@ const scoringCliente = {
 // 	}
 const valoresCualitativos = {
 	"seguro": {
-		"Muerte": 0,
-		"Nada": 0,
+		"Muerte": 1,
+		"Nada": 2,
 	},
 	"rubro": {
-		"Abogado": 0,
-		"Doctor": 0,
-		"Obrero": 0,
+		"Abogado": 1,
+		"Doctor": 2,
+		"Obrero": 3,
 	},
 	"genero": {
-		"F": 0,
-		"M": 0,
-		"X": 0,
+		"F": 1,
+		"M": 2,
+		"X": 3,
 	}
 }
 
