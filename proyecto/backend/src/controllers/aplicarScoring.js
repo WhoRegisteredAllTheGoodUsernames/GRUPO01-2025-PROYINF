@@ -67,6 +67,9 @@ function obtenerSumaFuncion(funct, valores){
 async function obtenerUltimoScoring(){
 	try {
 		const result = await pool.query(sql["obtenerScoring"]);
+
+		if (result.rows.length == 0) return {}
+
 		return result.rows[0];
 	} catch (err) {
 		console.error(err);
