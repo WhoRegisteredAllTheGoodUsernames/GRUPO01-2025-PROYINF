@@ -1,5 +1,6 @@
 // src/controllers/solicitudController.js
 const pool = require('../db/db');
+const scoring = require('./aplicarScoring');
 
 /**
  * Controlador para mostrar los datos de una simulación y permitir iniciar la solicitud.
@@ -111,7 +112,13 @@ const actualizarDatosYScoring = async (req, res) => {
     //⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
     //const nuevoScoring = await aplicarScoring(rutCliente);
     //⚠️⚠️⚠️⚠️OJOOOOO QUEDÓ COMENTADA MIENTRAS SE IMPLEMENTA LA FUNCÍON. POR AHORA ES VALOR FIJO⚠️⚠️⚠️
-    const nuevoScoring = 75;
+	  const nuevoScoring = scoring.aplicarScoringCliente({
+		  "salario": salario,
+		  "rubro": rubro,
+		  "genero": genero,
+		  //"monto": monto,
+		  //"seguro": seguro,
+	  });
 
     // 5️⃣ Guardar el nuevo scoring en la tabla cliente
     await pool.query(
