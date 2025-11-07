@@ -1,6 +1,8 @@
 // src/controllers/ingresarSimulacion.js
 const pool = require("../db/db");
 const sql = require("../db/crearSimulacion");
+//const obtenerDatosCliente = require("./obtenerDatosCliente");
+const scoring = require("./aplicarScoring");
 
 async function registrarSimulacion(req, res) {
   try {
@@ -20,7 +22,17 @@ async function registrarSimulacion(req, res) {
     const impuestos = monto * 0.02;
     const gastosNotariales = 50000;
     const totalCredito = monto + impuestos + gastosNotariales;
-    const scoring_requerido = 600;
+	const functScoring = await scoring.obtenerUltimoScoring();
+    const scoring_requerido = scoring.aplicarScoring(functScoring["funcion"], {
+		"monto": monto,
+		"numero-cuotas": numero_cuotas,
+		"tasa-interes": tasa_interes,
+		"seguro": seguro
+	});
+	//const datosScoringCliente = await obtenerDatosCliente(req, false);
+	//datosScoringCliente["monto"] = monto;
+	//datosScoringCliente["seguro"] = seguro;
+	//const scoringCliente = scoring.aplicarScoringCliente(datosScoringCliente);
 
     const resultado = {
       fecha,
@@ -43,7 +55,6 @@ async function registrarSimulacion(req, res) {
     }
 
     const rut_cliente = req.session.user.rut;
-    const id_funcion_crediticia = null;
 
     await pool.query(sql["crearSimulacion"], [
       fecha,
@@ -52,7 +63,7 @@ async function registrarSimulacion(req, res) {
       tasa_interes,
       scoring_requerido,
       rut_cliente,
-      id_funcion_crediticia,
+      functScoring["id"],
       seguro,
     ]);
 
