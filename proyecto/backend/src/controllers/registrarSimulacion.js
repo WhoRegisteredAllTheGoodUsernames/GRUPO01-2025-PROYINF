@@ -22,7 +22,8 @@ async function registrarSimulacion(req, res) {
     const impuestos = monto * 0.02;
     const gastosNotariales = 50000;
 	const totalCredito = monto + impuestos + gastosNotariales;
-	const functScoring = await scoring.obtenerUltimoScoring();
+	//const functScoring = await scoring.obtenerUltimoScoring();
+	const functScoring = {"funcion": "20monto+seguro"};
     const scoring_requerido = scoring.aplicarScoring(functScoring["funcion"], {
 		"monto": monto,
 		"numero-cuotas": numero_cuotas,
