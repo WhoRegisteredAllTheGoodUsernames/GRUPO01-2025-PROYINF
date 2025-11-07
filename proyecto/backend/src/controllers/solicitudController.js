@@ -113,7 +113,7 @@ const actualizarDatosYScoring = async (req, res) => {
     //const nuevoScoring = await aplicarScoring(rutCliente);
     //⚠️⚠️⚠️⚠️OJOOOOO QUEDÓ COMENTADA MIENTRAS SE IMPLEMENTA LA FUNCÍON. POR AHORA ES VALOR FIJO⚠️⚠️⚠️
 	  const nuevoScoring = scoring.aplicarScoringCliente({
-		  "salario": salario,
+		  "salario": Number(salario),
 		  "rubro": rubro,
 		  "genero": genero,
 		  //"monto": monto,
