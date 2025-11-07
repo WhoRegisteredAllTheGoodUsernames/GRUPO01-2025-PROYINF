@@ -52,4 +52,26 @@ router.post('/solicitud/:idSimulacion/datos', async (req, res) => {
 	}
 });
 
+// --------------------------
+// ETAPA 4: Confirmar solicitud y evaluar aprobación
+// --------------------------
+router.get('/solicitud/:idSimulacion/confirmar', async (req, res) => {
+	try {
+		await solicitudController.confirmarSolicitud(req, res);
+	} catch (error) {
+		console.error('Error al preparar confirmación de solicitud:', error);
+		res.status(500).send('Error al preparar confirmación de solicitud');
+	}
+});
+
+router.post('/solicitud/:idSimulacion/confirmar', async (req, res) => {
+	try {
+		await solicitudController.procesarConfirmacion(req, res);
+	} catch (error) {
+		console.error('Error al procesar confirmación de solicitud:', error);
+		res.status(500).send('Error al procesar confirmación de solicitud');
+	}
+});
+
+
 module.exports = router;

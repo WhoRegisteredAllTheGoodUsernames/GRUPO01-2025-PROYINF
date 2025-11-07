@@ -7,7 +7,7 @@ const pool = require('./src/db/db'); // Importar la conexión
 const iniciarMiddleware = require('./src/middlewares/iniciarMiddleware')
 const crearTablas = require('./src/db/crearTablas')
 const iniciarRutas = require('./src/routes/iniciarRutas')
-const simulacionSolicitudRoutes = require('./src/simulacion_y_solicitud_routes');
+const simulacionSolicitudRoutes = require('./src/routes/simulacion_y_solicitud_routes');
 
 
 crearTablas(pool);

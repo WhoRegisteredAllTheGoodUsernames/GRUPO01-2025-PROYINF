@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS "pago-cuota" (
     "id-prestamo" integer NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS prestamo (
-    id integer NOT NULL,
+CREATE TABLE IF NOT EXISTS "prestamo" (
+    id SERIAL PRIMARY KEY, 
     fecha date NOT NULL,
     monto integer NOT NULL,
     "numero-cuotas" integer NOT NULL,
@@ -106,9 +106,10 @@ ALTER TABLE "pago-cuota" DROP CONSTRAINT IF EXISTS pago_cuota_pk CASCADE;
 ALTER TABLE ONLY "pago-cuota"
     ADD CONSTRAINT pago_cuota_pk PRIMARY KEY (id);
 
-ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_pk CASCADE;
-ALTER TABLE ONLY prestamo
-    ADD CONSTRAINT prestamo_pk PRIMARY KEY (id);
+-- Comento esto pq estaba webiando con la pk arriba
+-- ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_pk CASCADE;
+-- ALTER TABLE ONLY prestamo
+--     ADD CONSTRAINT prestamo_pk PRIMARY KEY (id);
 
 ALTER TABLE cliente DROP CONSTRAINT IF EXISTS rut CASCADE;
 ALTER TABLE ONLY cliente
@@ -141,6 +142,25 @@ ALTER TABLE ONLY "funcion-crediticia"
 ALTER TABLE "pago-cuota" DROP CONSTRAINT IF EXISTS pago_cuota_prestamo_fk CASCADE;
 ALTER TABLE ONLY "pago-cuota"
     ADD CONSTRAINT pago_cuota_prestamo_fk FOREIGN KEY ("id-prestamo") REFERENCES prestamo(id) ON DELETE CASCADE;
+
+-- Esto hay que borrarlo cuando se implementen las funciones crediticias para el scoring, pero por
+-- el momento es necesario para las solicitudes. Queda como
+-- atributo normal, sin ser FK, y por el momento les asigna -1 a todas nomás
+ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_funcion_crediticia_fk;
+
+ALTER TABLE prestamo
+ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL,
+ALTER COLUMN "id-funcion-crediticia" SET DEFAULT -1;
+
+--Lo mismo pero con el tema de las cuentas bancarias del cliente, como no están implementadas las dejé
+-- comoatributo normal, sin ser FK, y por el momento les asigna -1 a todas nomás
+ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_cuentas_bancarias_usuario_fk;
+
+ALTER TABLE prestamo
+ALTER COLUMN "id-cuenta-destino" DROP NOT NULL,
+ALTER COLUMN "id-cuenta-destino" SET DEFAULT -1;
+
+--Fin del bloque a borrar
 
 ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_cliente_fk CASCADE;
 ALTER TABLE ONLY prestamo
@@ -179,4 +199,7 @@ ADD COLUMN IF NOT EXISTS "seguro" character varying(50) NOT NULL DEFAULT 'Sin se
 ALTER TABLE "simulacion-prestamo"
 ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL,
 ALTER COLUMN "scoring-requerido" DROP NOT NULL;
+
+
+
 

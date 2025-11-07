@@ -20,7 +20,8 @@ async function registrarSimulacion(req, res) {
     const impuestos = monto * 0.02;
     const gastosNotariales = 50000;
     const totalCredito = monto + impuestos + gastosNotariales;
-    const scoring_requerido = 600;
+    //Notar que aquí se tendrá que usar la función!!!!!!
+    const scoring_requerido = 60;
 
     const resultado = {
       fecha,

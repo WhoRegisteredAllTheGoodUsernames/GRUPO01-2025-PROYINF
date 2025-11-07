@@ -190,22 +190,36 @@ const procesarConfirmacion = async (req, res) => {
     const rutCliente = req.session.user.rut;
     const idSimulacion = req.params.idSimulacion;
 
+    console.log(`📩 Procesando confirmación de solicitud para cliente RUT: ${rutCliente}, simulación ID: ${idSimulacion}`);
+
     // 1️⃣ Obtener datos de simulación y scoring del cliente
     const sim = await pool.query(
       'SELECT * FROM "simulacion-prestamo" WHERE id = $1 AND "rut-cliente" = $2',
       [idSimulacion, rutCliente]
     );
+
     if (sim.rows.length === 0) {
-      return res.status(404).json({ error: 'Simulación no encontrada' });
+      console.warn(`⚠️ No se encontró la simulación con ID ${idSimulacion} para el cliente ${rutCliente}`);
+      return res.status(404).json({ error: 'Simulación no encontrada o no pertenece al usuario' });
     }
+
     const simulacion = sim.rows[0];
 
     const cliente = await pool.query('SELECT scoring FROM cliente WHERE rut = $1', [rutCliente]);
     const scoringCliente = cliente.rows[0].scoring;
+    const scoringRequerido = simulacion['scoring-requerido'];
+
+    console.log(`📊 Scoring cliente: ${scoringCliente} | Scoring requerido: ${scoringRequerido}`);
 
     // 2️⃣ Comparar scoring y decidir estado
-    const aprobado = scoringCliente >= simulacion['scoring-requerido'];
+    const aprobado = scoringCliente >= scoringRequerido;
     const estadoAprobacion = aprobado ? 'Aprobado' : 'Rechazado';
+
+    console.log(
+      aprobado
+        ? `✅ Solicitud aprobada (scoring ${scoringCliente} >= ${scoringRequerido})`
+        : `❌ Solicitud rechazada (scoring ${scoringCliente} < ${scoringRequerido})`
+    );
 
     // 3️⃣ Insertar nuevo registro en la tabla prestamo
     await pool.query(
@@ -219,7 +233,7 @@ const procesarConfirmacion = async (req, res) => {
         simulacion.monto,
         simulacion['numero-cuotas'],
         simulacion['tasa-interes'],
-        simulacion['scoring-requerido'],
+        scoringRequerido,
         scoringCliente,
         estadoAprobacion,
         rutCliente,
@@ -228,17 +242,35 @@ const procesarConfirmacion = async (req, res) => {
       ]
     );
 
-    // 4️⃣ Devolver resultado
+    console.log(`💾 Registro insertado en tabla 'prestamo' con estado: ${estadoAprobacion}`);
+
+    // 4️⃣ Devolver resultado detallado
     res.status(200).json({
       message: `Solicitud procesada: ${estadoAprobacion}`,
-      estado: estadoAprobacion
+      detalles: {
+        idSimulacion,
+        rutCliente,
+        scoringCliente,
+        scoringRequerido,
+        monto: simulacion.monto,
+        cuotas: simulacion['numero-cuotas'],
+        tasa: simulacion['tasa-interes'],
+        seguro: simulacion.seguro,
+        estado: estadoAprobacion
+      }
     });
 
   } catch (error) {
-    console.error('Error en procesarConfirmacion:', error);
-    res.status(500).json({ error: 'Error al procesar la confirmación de solicitud' });
-  }
+        console.error('❌ Error en procesarConfirmacion:', error);
+        res.status(500).json({
+            error: 'Error al procesar la confirmación de solicitud',
+            detalle: error.message,       // 👈 muestra el mensaje real del error
+            stack: error.stack            // 👈 opcional: muestra la traza completa
+        });
+    }
 };
+
+
 
 
 
