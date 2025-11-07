@@ -19,7 +19,9 @@ async function resultadoSimulacion(req, res) {
     return res.json({
       success: true,
       resultado,
+      idSimulacion: resultado.id || null
     });
+
 
   } catch (error) {
     console.error("❌ Error al obtener resultado de simulación:", error);

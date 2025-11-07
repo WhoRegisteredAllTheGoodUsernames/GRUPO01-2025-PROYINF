@@ -4,6 +4,7 @@ import Login from './vistas/Login';
 import Simulacion from './vistas/Simulacion';
 import ModScoring from './vistas/ModScoring';
 import ResultadoSimulacion from './vistas/resultadoSimulacion';
+import Solicitud from './vistas/solicitud';
 //import logo from './logo.svg';
 import './App.css';
 import {
@@ -21,6 +22,7 @@ function App() {
 				<Route path="/simulacion" element={<Simulacion />} />
 				<Route path="/mod_scoring" element={<ModScoring />} />
 				<Route path="/resultadoSimulacion" element={<ResultadoSimulacion />} />
+				<Route path="/solicitud" element={<Solicitud />} />
 			</Routes>
 	  </Router>
   );

@@ -57,21 +57,29 @@ async function registrarSimulacion(req, res) {
 
     const rut_cliente = req.session.user.rut;
 
-    await pool.query(sql["crearSimulacion"], [
-      fecha,
-      monto,
-      numero_cuotas,
-      tasa_interes,
-      scoring_requerido,
-      rut_cliente,
-      functScoring["id"],
-      seguro,
-    ]);
+    // Inserta en la base de datos y captura el ID generado
+    const insert = await pool.query(
+      sql["crearSimulacion"],
+      [
+        fecha,
+        monto,
+        numero_cuotas,
+        tasa_interes,
+        scoring_requerido,
+        rut_cliente,
+        functScoring["id"],
+        seguro,
+      ]
+    );
 
-    console.log("✅ Simulación guardada correctamente en BD");
+    // 👇 Nuevo: guardar ID de la simulación insertada
+    const idSimulacion = insert.rows[0]?.id;
+    console.log(`💾 Simulación creada con ID ${idSimulacion}`);
 
-    req.session.simulacion = resultado;
-    return res.redirect('/resultadoSimulacion');
+    // Guardar en sesión
+    req.session.simulacion = { ...resultado, id: idSimulacion };
+    return res.redirect("/resultadoSimulacion");
+
 
   } catch (error) {
     console.error("❌ Error al registrar simulación:", error);
