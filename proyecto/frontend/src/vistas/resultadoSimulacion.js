@@ -132,46 +132,52 @@ export default function ResultadoSimulacion() {
             </tbody>
           </table>
 
-          <div
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "25px",
+            gap: "20px",
+          }}
+        >
+          <button
+            onClick={() => navigate("/simulacion")}
             style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "25px",
-              gap: "20px",
+              padding: "10px 20px",
+              backgroundColor: "#312F55",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "bold",
             }}
           >
-            <button
-              onClick={() => navigate("/simulacion")}
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#312F55",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              Nueva simulación
-            </button>
+            Nueva simulación
+          </button>
 
-            
-              <button
-                onClick={() => navigate(`/solicitud/${idSimulacion}`)} // 👈 URL con ID real
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#1a1f3c",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                }}
-              >
-                Solicitar crédito
-              </button>
-            
-          </div>
+          <button
+            onClick={() => {
+              if (idSimulacion) {
+                navigate(`/solicitud/${idSimulacion}`);
+              } else {
+                alert("No se encontró el ID de la simulación. Intenta nuevamente.");
+              }
+            }}
+            style={{
+              padding: "10px 20px",
+              backgroundColor: idSimulacion ? "#1a1f3c" : "#888",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: idSimulacion ? "pointer" : "not-allowed",
+              fontWeight: "bold",
+            }}
+            disabled={!idSimulacion}
+          >
+            Solicitar crédito
+          </button>
+        </div>
+
 
         </div>
       </main>

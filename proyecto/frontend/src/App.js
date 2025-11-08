@@ -5,6 +5,10 @@ import Simulacion from './vistas/Simulacion';
 import ModScoring from './vistas/ModScoring';
 import ResultadoSimulacion from './vistas/resultadoSimulacion';
 import Solicitud from './vistas/solicitud';
+import DatosClienteSolicitud from "./vistas/DatosClienteSolicitud";
+import ConfirmarSolicitud from "./vistas/ConfirmarSolicitud";
+
+
 //import logo from './logo.svg';
 import './App.css';
 import {
@@ -22,7 +26,9 @@ function App() {
 				<Route path="/simulacion" element={<Simulacion />} />
 				<Route path="/mod_scoring" element={<ModScoring />} />
 				<Route path="/resultadoSimulacion" element={<ResultadoSimulacion />} />
-				<Route path="/solicitud" element={<Solicitud />} />
+				<Route path="/solicitud/:idSimulacion" element={<Solicitud />} />
+				<Route path="/solicitud/:idSimulacion/datos" element={<DatosClienteSolicitud />} />
+				<Route path="/solicitud/:idSimulacion/confirmar" element={<ConfirmarSolicitud />} />
 			</Routes>
 	  </Router>
   );

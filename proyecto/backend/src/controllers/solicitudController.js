@@ -121,6 +121,13 @@ const actualizarDatosYScoring = async (req, res) => {
 		  //"seguro": seguro,
 	  });
 
+    console.log("🧩 Datos recibidos para recalcular scoring:", {
+      salario,
+      rubro,
+      genero,
+      rutCliente,
+    });
+    console.log("🧮 Scoring calculado:", nuevoScoring);
     // 5️⃣ Guardar el nuevo scoring en la tabla cliente
     await pool.query(
       'UPDATE cliente SET scoring = $1 WHERE rut = $2',

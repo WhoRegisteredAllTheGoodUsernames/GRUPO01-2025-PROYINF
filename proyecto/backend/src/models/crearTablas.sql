@@ -163,9 +163,9 @@ ALTER TABLE ONLY prestamo
 -- ALTER TABLE ONLY prestamo
 --     ADD CONSTRAINT prestamo_cuentas_bancarias_usuario_fk FOREIGN KEY ("id-cuenta-destino") REFERENCES "cuentas-bancarias-usuario"(id);
 
-ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_funcion_crediticia_fk CASCADE;
-ALTER TABLE ONLY prestamo
-    ADD CONSTRAINT prestamo_funcion_crediticia_fk FOREIGN KEY ("id-funcion-crediticia") REFERENCES "funcion-crediticia"(id);
+-- ALTER TABLE prestamo DROP CONSTRAINT IF EXISTS prestamo_funcion_crediticia_fk CASCADE;
+-- ALTER TABLE ONLY prestamo
+--     ADD CONSTRAINT prestamo_funcion_crediticia_fk FOREIGN KEY ("id-funcion-crediticia") REFERENCES "funcion-crediticia"(id);
 
 
 --Constraints para la tabla de simulaciones. Comentado porque ahora se agrega automarica la pk
@@ -177,9 +177,9 @@ ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_
 ALTER TABLE ONLY "simulacion-prestamo"
     ADD CONSTRAINT simulacion_prestamo_cliente_fk FOREIGN KEY ("rut-cliente") REFERENCES cliente(rut);
 
-ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_funcion_crediticia_fk CASCADE;
-ALTER TABLE ONLY "simulacion-prestamo"
-    ADD CONSTRAINT simulacion_prestamo_funcion_crediticia_fk FOREIGN KEY ("id-funcion-crediticia") REFERENCES "funcion-crediticia"(id);
+-- ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_funcion_crediticia_fk CASCADE;
+-- ALTER TABLE ONLY "simulacion-prestamo"
+--     ADD CONSTRAINT simulacion_prestamo_funcion_crediticia_fk FOREIGN KEY ("id-funcion-crediticia") REFERENCES "funcion-crediticia"(id);
 
 -- Añadir el atributo seguro a la tabla de prestamos. Ojo sólo si no existe ya pa evitar errores
 ALTER TABLE prestamo
@@ -194,5 +194,13 @@ ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL,
 ALTER COLUMN "scoring-requerido" DROP NOT NULL;
 
 
+--Borrar luego!
+ALTER TABLE prestamo
+ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL,
+ALTER COLUMN "id-funcion-crediticia" SET DEFAULT -1;
 
+ALTER TABLE "simulacion-prestamo"
+ALTER COLUMN "id-funcion-crediticia" DROP NOT NULL,
+ALTER COLUMN "id-funcion-crediticia" SET DEFAULT -1;
 
+ALTER TABLE "simulacion-prestamo" DROP CONSTRAINT IF EXISTS simulacion_prestamo_funcion_crediticia_fk;

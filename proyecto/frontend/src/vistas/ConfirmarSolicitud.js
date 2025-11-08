@@ -3,40 +3,64 @@ import { useParams, useNavigate } from "react-router-dom";
 import { back_dir } from "../backend";
 import logo from "../img/logo.png";
 
-export default function VerSimulacion() {
+export default function ConfirmarSolicitud() {
   const { idSimulacion } = useParams();
-  const [simulacion, setSimulacion] = useState(null);
+  const [resultado, setResultado] = useState(null);
   const [error, setError] = useState(null);
+  const [cargando, setCargando] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const cargarSimulacion = async () => {
-      try {
-        const res = await fetch(`${back_dir}/solicitud/${idSimulacion}`, {
-          method: "GET",
-          credentials: "include",
-        });
+  // Obtener el resumen de la simulación al montar la vista
+  const obtenerResumen = async () => {
+    try {
+      setCargando(true);
+      const res = await fetch(`${back_dir}/solicitud/${idSimulacion}`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-        if (res.status === 401) {
-          navigate("/login");
-          return;
-        }
-
-        if (!res.ok) {
-          const msg = await res.text();
-          throw new Error(msg || "Error al obtener simulación");
-        }
-
-        const data = await res.json();
-        setSimulacion(data.simulacion);
-      } catch (err) {
-        console.error("❌ Error al cargar simulación:", err);
-        setError("Error al cargar los datos de la simulación.");
+      if (res.status === 401) {
+        navigate("/login");
+        return;
       }
-    };
 
-    cargarSimulacion();
-  }, [idSimulacion, navigate]);
+      if (!res.ok) throw new Error("Error al cargar los datos de la simulación");
+
+      const data = await res.json();
+      setResultado(data.simulacion || data);
+    } catch (err) {
+      console.error("❌ Error al obtener resumen:", err);
+      setError("No se pudieron cargar los datos de la simulación.");
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  // Procesar confirmación (POST)
+  const confirmarSolicitud = async () => {
+    try {
+      setCargando(true);
+      const res = await fetch(`${back_dir}/solicitud/${idSimulacion}/confirmar`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!res.ok) throw new Error("Error al confirmar la solicitud");
+
+      const data = await res.json();
+      setResultado(data.prestamo);
+      alert(data.message);
+    } catch (err) {
+      console.error("❌ Error en confirmación:", err);
+      alert("Error al procesar la confirmación.");
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  useEffect(() => {
+    obtenerResumen();
+  }, [idSimulacion]);
 
   if (error) {
     return (
@@ -46,10 +70,10 @@ export default function VerSimulacion() {
     );
   }
 
-  if (!simulacion) {
+  if (cargando || !resultado) {
     return (
       <div style={{ textAlign: "center", marginTop: "25vh" }}>
-        <h2>Cargando simulación...</h2>
+        <h2>Cargando...</h2>
       </div>
     );
   }
@@ -76,7 +100,7 @@ export default function VerSimulacion() {
         }}
       >
         <img src={logo} alt="Logo" style={{ height: "40px" }} />
-        <h2>Simulación #{idSimulacion}</h2>
+        <h2>Confirmar solicitud #{idSimulacion}</h2>
         <a
           href="/logout"
           style={{
@@ -117,7 +141,7 @@ export default function VerSimulacion() {
               marginBottom: "25px",
             }}
           >
-            Detalle de Simulación
+            Resumen de la solicitud
           </h1>
 
           <table
@@ -129,7 +153,7 @@ export default function VerSimulacion() {
             }}
           >
             <tbody>
-              {Object.entries(simulacion).map(([key, value]) => (
+              {Object.entries(resultado).map(([key, value]) => (
                 <tr key={key}>
                   <td
                     style={{
@@ -153,23 +177,42 @@ export default function VerSimulacion() {
               ))}
             </tbody>
           </table>
-        </div>
 
-        <button
-          onClick={() => navigate(`/solicitud/${idSimulacion}/datos`)}
-          style={{
-            marginTop: "30px",
-            padding: "10px 20px",
-            backgroundColor: "#1a1f3c",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          Continuar solicitud
-        </button>
+          {!resultado["estado-aprobacion"] && (
+            <button
+              onClick={confirmarSolicitud}
+              disabled={cargando}
+              style={{
+                marginTop: "30px",
+                width: "100%",
+                padding: "10px",
+                backgroundColor: "#1a1f3c",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              {cargando ? "Procesando..." : "Confirmar solicitud"}
+            </button>
+          )}
+
+          {resultado["estado-aprobacion"] && (
+            <h2
+              style={{
+                marginTop: "30px",
+                textAlign: "center",
+                color:
+                  resultado["estado-aprobacion"] === "Aprobado"
+                    ? "green"
+                    : "red",
+              }}
+            >
+              Solicitud {resultado["estado-aprobacion"]}
+            </h2>
+          )}
+        </div>
       </main>
 
       {/* Footer */}

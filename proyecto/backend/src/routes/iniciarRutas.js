@@ -5,15 +5,31 @@ const { login, logout } = require('../controllers/loginController');
 const sessionInfo = require('../controllers/sessionController'); // ← nuevo import
 
 function iniciarRutas(app) {
+	// app.post('/registro', async (req, res) => {
+	// 	try {
+	// 		await registrarUsuario(req.body);
+	// 		res.redirect(frontDir);
+	// 	} catch (error) {
+	// 		console.error("Error en /registro:", error.message);
+	// 		res.status(400).send(error.message);
+	// 	}
+	// });
 	app.post('/registro', async (req, res) => {
 		try {
 			await registrarUsuario(req.body);
-			res.redirect(frontDir);
+			res.status(200).json({
+			ok: true,
+			mensaje: "Usuario registrado con éxito",
+			});
 		} catch (error) {
 			console.error("Error en /registro:", error.message);
-			res.status(400).send(error.message);
+			res.status(400).json({
+			ok: false,
+			error: error.message || "Error inesperado al registrar usuario",
+			});
 		}
-	});
+		});
+
 
 	// Login real con sesiones
 	app.post('/login', login);
