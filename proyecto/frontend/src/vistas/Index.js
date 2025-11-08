@@ -90,6 +90,17 @@ export default function Index() {
 						>
 						Registrarse
 					</Link>
+					<Link
+						to="/mod_scoring"
+						style={{
+							color: "white",
+							textDecoration: "none",
+							fontSize: "clamp(14px, 2vw, 17px)",
+							whiteSpace: "nowrap",
+						}}
+						>
+						Modificar modelo de scoring
+					</Link>
 					
 					{/* <a
 						href="/login"

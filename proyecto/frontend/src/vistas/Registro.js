@@ -17,6 +17,7 @@ export default function Registro() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+	console.log(form);
   };
 
 const handleSubmit = async (e) => {
@@ -31,7 +32,7 @@ const handleSubmit = async (e) => {
 		"segundo-nombre": form["segundo-nombre"],
 		"apellido-paterno": form["apellido-paterno"],
 		"apellido-materno": form["apellido-materno"],
-		"tipo[]": "C",
+		"tipo[]": form["tipo[]"],
 		"fecha-nacimiento": form["fecha-nacimiento"],
 		};
 
@@ -141,7 +142,10 @@ const handleSubmit = async (e) => {
         <label style={{ fontWeight: "bold" }}>Tipo</label>
         <div style={{ marginBottom: "15px" }}>
           <label style={{ marginRight: "10px" }}>
-            <input type="radio" name="tipo[]" value="C" defaultChecked /> C
+            <input type="radio" name="tipo[]" value="C" onChange={handleChange} /> Cliente
+          </label>
+          <label style={{ marginRight: "10px" }}>
+            <input type="radio" name="tipo[]" value="B"  onChange={handleChange} /> Bancario
           </label>
         </div>
 
