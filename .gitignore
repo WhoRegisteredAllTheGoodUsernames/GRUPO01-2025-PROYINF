@@ -11,6 +11,10 @@
 # production
 /frontend/build
 
+#cositas de la api de docusign
+/backend/.env
+/backend/docusign_private.key
+
 # misc
 /frontend/.DS_Store
 /frontend/.env.local
