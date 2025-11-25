@@ -72,6 +72,7 @@ async function login(req, res) {
       apellido_paterno: userRow['apellido-paterno'],
       tipo: userRow.tipo
     };
+    console.log("Sesion iniciada con exito");
 
     // Si venía de una simulación pendiente, redirigir ahí
     const destino = req.session.redirectAfterLogin || '/';
@@ -109,7 +110,10 @@ function logout(req, res) {
     }
     // limpiar cookie y redirigir
     res.clearCookie('connect.sid');
-    return res.redirect('/');
+    console.log("Sesion Cerrada con exito")
+    // Cambie el return para que lo devuelva en json, para que se muestre correctamente en el frontend
+    return res.json({ ok: true, message: 'Sesion cerrada'})
+   // return res.redirect('/');
   });
 }
 

@@ -9,7 +9,13 @@ El pdf pruebaa es como dice el nombre, un pdf de prueba que use, para la api nec
 Actualmente funciona para hacer peticiones a la api, solo lo probe con postman, donde a la url http://localhost:3000/api/docusign/iniciar-firma
 se le pasa un json con formato "emailCliente": "", "nombreCliente":"", y al email que pongan va a llegar un correo pidiendo firmar
 
-Todavia no he probado el webhook para recibir la señal desde la api, de que el archivo fue firmado, pero se que para eso se necesita ngrok y abrir el puerto 3000
+Tambien esta implementado el webhook que recibe de la API cuando se firme correctamente, se rechazan los documentos u alguna otra
+Cuando se inicia la firma, se crea un dato envelopeId, el cual es la forma de identificar la solicitud en la API, cuando se crea una solicitud de firma
+se deberia guardar en la BDD para relacionarlo a la solicitud de prestamo y actualizar el estado de esta. Ademas cuando se recibe el webhook, viene con el 
+envelopeId correspondiente, para actualizar el estado de la firma segun corresponda
+
+Para probar el webhook, se necesita ngrok, el tema es que cada cuenta de ngrok te genera un link distinto, por lo tanto habria que cambiarlo todo el rato
+desde la pagina de la API, actualmente funciona, pero si existe alguna duda preguntenme no mas
 
 
 # Aplicación Node.js con Docker y PostgreSQL

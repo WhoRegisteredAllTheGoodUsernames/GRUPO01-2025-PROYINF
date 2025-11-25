@@ -30,6 +30,9 @@ export default function Login() {
       const data = await res.json();
       if (data.ok) {
         console.log("✅ Usuario autenticado:", data.user);
+
+        localStorage.setItem("usuario_sesion", JSON.stringify(data.user));
+
         const destino = data.redirect || "/simulacion"; // usa redirect del backend
         navigate(destino);
       } else {
@@ -132,6 +135,22 @@ export default function Login() {
           }}
         />
       </form>
+        <div >
+          
+        <button 
+            onClick={() => navigate('/registro')}
+            style={{
+            width: "100%",
+            marginTop: "10px",
+            padding: "10px",
+            backgroundColor: "#1a1f3c",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }} >Registarse</button>
+          </div>
     </div>
   );
 }

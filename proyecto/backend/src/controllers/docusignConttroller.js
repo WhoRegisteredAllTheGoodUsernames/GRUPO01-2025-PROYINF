@@ -25,7 +25,6 @@ async function getDocuSignAccessToken() {
     }
     const scopes = ["signature", "impersonation"];
     try {
-        console.log('pre apiclient');
         const results = await apiClient.requestJWTUserToken(
             DS_CONFIG.integrationKey,
             DS_CONFIG.userId,
@@ -33,7 +32,6 @@ async function getDocuSignAccessToken() {
             privateKey,
             3600 
         );
-        console.log('post apiclient');
         return results.body.access_token;
     } catch (error) {
         console.error("Error al obtener token de DocuSign:", error);
@@ -42,9 +40,7 @@ async function getDocuSignAccessToken() {
 }
 
 async function getApiClient() {
-    console.log('pre accesstoken');
     const accessToken = await getDocuSignAccessToken();
-    console.log('post accesstoken');
     const apiClient = new docusign.ApiClient();
     apiClient.setBasePath(DS_CONFIG.basePath);
     apiClient.addDefaultHeader('Authorization', 'Bearer ' + accessToken);
@@ -120,12 +116,32 @@ async function iniciarFirma(req, res) {
         env.recipients = docusign.Recipients.constructFromObject({
             signers: [signer1]
         });
+
+        // LO SIGUEINTE ESTA COMENTADO PORQUE ESTO MISMO YA LO TENIA CONFIGURADO EN LA CUENTA DE DOCUSIGN
+        // entonces como estaba doble, se mandaba 2 veces el evento al webhook, para evitar eso preferi comentar esto
+        // lo borraria pero si hay que cambiar la cuenta de docusign, nos podemos ahorrar una parte de la configuracion solo descomentando este codigo
+        // la verdad preferiria crear otra cuenta, para aumentar el plazo de la prueba gratis y ademas para que me dejen de llegar los correos a mi :)
+
+        // let notificacionEvento = new docusign.EventNotification();
+        // notificacionEvento.url = 'https://commercialistic-muscularly-kaiya.ngrok-free.dev/api/docusign/webhook';
+        // notificacionEvento.loggingEnabled = 'true';
+        // notificacionEvento.requireAcknowledgment = 'true';
+
+        // let envelopeEvents = [
+        //     docusign.EnvelopeEvent.constructFromObject({ envelopeEventStatusCode: 'completed'}),
+        //     docusign.EnvelopeEvent.constructFromObject({ envelopeEventStatusCode: 'declined'}),
+        // ];
+        // notificacionEvento.envelopeEvents = envelopeEvents;
+        // env.EventNotification = notificacionEvento
+
+
         // 6. Enviamos el Sobre (la solicitud de firma)
         const results = await envelopesApi.createEnvelope(DS_CONFIG.apiAccountId, {
             envelopeDefinition: env
         });
 
         console.log('Sobre enviado! Envelope ID:', results.envelopeId);
+        // el envelopeId tenemos que guardarlo en la BDD para relacionarlo al proceso de firma del credito que corresponda
         // Respondemos al frontend que todo salió bien
         res.status(200).send({ 
             message: 'Solicitud de firma enviada correctamente.',
@@ -143,12 +159,21 @@ async function iniciarFirma(req, res) {
 }
 
 
+    // Recibe la señal de docusign de que fue firmado exitosamente o los documentos fueron rechazados por el cliente
+    // Aca habria que actualizar tambien el estado segun la señal a la solicitud de credito a quien le corresponda el envelopeId
 async function recibirWebhook(req, res) {
     const payload = req.body;
-    console.log('¡Webhook de DocuSign recibido!', payload);
-    if (payload.status === 'Completed') {
-        const envelopeId = payload.envelopeId;
-        console.log(`Proceso de firma ${envelopeId} completado.`);
+    console.log('¡Webhook de DocuSign recibido!',JSON.stringify(payload, null, 2));
+    if (payload.event === 'envelope-completed') {
+        const envelopeId = payload.data.envelopeId;
+        console.log(`Proceso de firma ${envelopeId} exitosa.`);
+    } else if (payload.event === 'envelope-declined') {
+        const envelopeId = payload.data.envelopeId;
+        console.log('Proceso de firma ${envelopeId} rechazada.');
+    } else {
+        // por como lo puse deberia avisar solamente si es firmado correctamente o es rechazado, pero por si acaso le puse eso
+        // cualquier cosa se puede cambiar desde la configuracion de la API en la pagina
+        console.log("Evento recibido no es exito ni rechazo")
     }
     // Respondes a DocuSign que recibiste el webhook
     res.status(200).send();

@@ -15,7 +15,7 @@ router.post('/iniciar-firma', async (req,res) => {
 
 
 
-
+// Ruta para recibir la señal de que los archivos fueron firmados correctamente o fueron rechazados
 router.post('/webhook', async (req, res) => {
     try {
         await docusign.recibirWebhook(req, res);

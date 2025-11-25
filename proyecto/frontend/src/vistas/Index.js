@@ -15,15 +15,30 @@ export default function Index(){
 	</div>
 	);
 } ESTO ESTABA EN UN PRINCIPIO PERO ME DIO MIEDITO BORRARLO XD */ 
+// Separe el header en una navbar aparte para recortar un poco el codigo y simplificarlo importandolo donde se necesite
+import Navbar from "./navbar";
+import React , { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Link } from "react-router-dom";
-import logo from '../img/logo.png';
 const dirs = [
   	{path: "simulacion", label: "Simular préstamo"},
   	//{ path: "mod_scoring", label: "Scoring" }, este es el boton de scoring creo
 ];
 
 export default function Index() {
+	// Agregado para que detecte que el usuario inicio la sesion, ocupando lo que ya habia que se guardaba en cookies
+	// entonces si esta iniciado, en / ya no aparece el boton de iniciar sesion, sino que su nombre y el boton para cerrar la sesion
+
+	const [user, setUser] = useState(null);
+	const navigate = useNavigate();
+
+	useEffect(()=> {
+		const userGuardado = localStorage.getItem("usuario_sesion")
+		if (userGuardado){
+			setUser(JSON.parse(userGuardado))
+		}
+	}, [])
+
   	return (
 		<div
 			id="index"
@@ -37,98 +52,8 @@ export default function Index() {
 		>
 
 			{/* barra de arriba */}
-			<header
-				style={{
-					backgroundColor: "#1a1f3c",
-					color: "white",
-					padding: "clamp(15px, 4vw, 25px) clamp(15px, 4vw, 30px)",
-					display: "flex",
-					justifyContent: "space-between",
-					alignItems: "center",
-					flexWrap: "wrap",
-					gap: "15px",
-					'@media (max-width: 768px)': { 
-						flexDirection: "column",
-						textAlign: "center",
-					},
-				}}
-				>
-
-				{/* logo */}
-				<div style={{ fontSize: "25px", fontWeight: "bold" }}> 
-					<img 
-					src={logo} 
-					alt="Logo"
-					style={{
-						width: "auto",   
-						height: "clamp(30px, 5vw, 45px)",
-						maxWidth: "120px"   
-					}}
-					/>
-				</div>
-				
-				{/* links */}
-				<div style={{display: "flex", gap: "clamp(15px, 3vw, 20px)", alignItems: "center", flexWrap: "wrap"}}>
-					{/*<a
-						href="/registro"
-						style={{
-							color: "white",
-							textDecoration: "none",
-							fontSize: "clamp(14px, 2vw, 17px)",
-              				whiteSpace: "nowrap",
-						}}
-					></a>*/}
-					
-					<Link
-						to="/registro"
-						style={{
-							color: "white",
-							textDecoration: "none",
-							fontSize: "clamp(14px, 2vw, 17px)",
-							whiteSpace: "nowrap",
-						}}
-						>
-						Registrarse
-					</Link>
-					<Link
-						to="/mod_scoring"
-						style={{
-							color: "white",
-							textDecoration: "none",
-							fontSize: "clamp(14px, 2vw, 17px)",
-							whiteSpace: "nowrap",
-						}}
-						>
-						Modificar modelo de scoring
-					</Link>
-					
-					{/* <a
-						href="/login"
-						style={{
-							color: "white",
-							textDecoration: "none",
-							fontWeight: "bold",
-							fontSize: "clamp(14px, 2vw, 17px)",
-              				whiteSpace: "nowrap",
-						}}
-					> </a>*/}
-
-					<Link
-						to="/login"
-						style={{
-						color: "white",
-						textDecoration: "none",
-						fontWeight: "bold",
-						fontSize: "clamp(14px, 2vw, 17px)",
-						whiteSpace: "nowrap",
-						}}
-					>
-					Iniciar sesión
-					</Link>
-				
-					
-				</div>
-			</header>
+			{/* lo siguiente importa la barra de arriba*/ }
+			< Navbar />
 
 			{/* cuadro central */} 
 			<main
@@ -153,7 +78,7 @@ export default function Index() {
 						textAlign: "top",
 						width: "80%",
 						width: "min(90%, 1000px)",
-            			marginTop: "clamp(-30px, -15vw, -160px)",
+						marginTop: "clamp(-30px, -15vw, -160px)",
 				}}
 				>
 					<h1
@@ -170,7 +95,7 @@ export default function Index() {
 					<h2
 						style={{
 							fontSize: "clamp(24px, 5vw, 50px)",
-              				margin: "clamp(5px, 1vw, 10px) 0 0",
+							margin: "clamp(5px, 1vw, 10px) 0 0",
 							color: "#1C142E",
 							fontWeight: "normal",
 							lineHeight: "1.2",

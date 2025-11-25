@@ -2,6 +2,7 @@ import { back_dir } from "../backend";
 import { useState } from "react";
 import logo from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./navbar";
 
 export default function Simulacion() {
   const [tasa, setTasa] = useState(1.32);
@@ -45,51 +46,8 @@ export default function Simulacion() {
         flexDirection: "column",
       }}
     >
-      <header
-        style={{
-          backgroundColor: "#1a1f3c",
-          color: "white",
-          padding: "clamp(15px, 4vw, 25px) clamp(15px, 4vw, 30px)",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "15px",
-        }}
-      >
-        <div style={{ fontSize: "25px", fontWeight: "bold" }}>
-          <img
-            src={logo}
-            alt="Logo"
-            style={{
-              width: "auto",
-              height: "clamp(30px, 5vw, 45px)",
-              maxWidth: "120px",
-            }}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            gap: "clamp(15px, 3vw, 20px)",
-            alignItems: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          <a
-            href="/login"
-            style={{
-              color: "white",
-              textDecoration: "none",
-              fontWeight: "bold",
-              fontSize: "clamp(14px, 2vw, 17px)",
-              whiteSpace: "nowrap",
-            }}
-          >
-            Iniciar sesión
-          </a>
-        </div>
-      </header>
+      {/*necesario para que funcione la barra*/}
+      <Navbar />
 
       <div
         style={{
