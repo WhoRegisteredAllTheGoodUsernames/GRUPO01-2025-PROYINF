@@ -9,13 +9,14 @@ El pdf pruebaa es como dice el nombre, un pdf de prueba que use, para la api nec
 Actualmente funciona para hacer peticiones a la api, solo lo probe con postman, donde a la url http://localhost:3000/api/docusign/iniciar-firma
 se le pasa un json con formato "emailCliente": "", "nombreCliente":"", y al email que pongan va a llegar un correo pidiendo firmar
 
-Tambien esta implementado el webhook que recibe de la API cuando se firme correctamente, se rechazan los documentos u alguna otra
-Cuando se inicia la firma, se crea un dato envelopeId, el cual es la forma de identificar la solicitud en la API, cuando se crea una solicitud de firma
-se deberia guardar en la BDD para relacionarlo a la solicitud de prestamo y actualizar el estado de esta. Ademas cuando se recibe el webhook, viene con el 
-envelopeId correspondiente, para actualizar el estado de la firma segun corresponda
+Ahora tambien funciona mediante la app, mediante el flujo, al tener una solicitud aprobada, aparece un boton de iniciar firma, al apretarlo se manda lo necesario
+a la api.
 
-Para probar el webhook, se necesita ngrok, el tema es que cada cuenta de ngrok te genera un link distinto, por lo tanto habria que cambiarlo todo el rato
-desde la pagina de la API, actualmente funciona, pero si existe alguna duda preguntenme no mas
+Actualmente como esta, se puede ocupar la api, pero al no estar subida la pagina, la api necesita un endpoint activo para mandar las respuestas cuando es firmada
+o rechazada, para esto, ahora la solucion es usar ngrok, donde puedes abrir el puerto del pc que tu quieras y te da un link subido a internet donde se puede
+recibir el webhook de la api. El tema es que cada cuenta gratis de ngrok, tiene un link distinto, lo que significaria cambiar la configuracion de la api cada vez
+que alguno de nosotros lo fuera a probar. Descarguense ngrok y despues me piden el token para que lo conecten a mi cuenta, para no tener que cambiar el link
+en la config de la API. tambien pidanme los archivos de la api para que funcione, pq no estoy seguro si subirlos aca o no
 
 
 # Aplicación Node.js con Docker y PostgreSQL

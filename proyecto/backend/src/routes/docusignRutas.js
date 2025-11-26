@@ -4,9 +4,11 @@ const docusign = require('../controllers/docusignConttroller') // Rutas para doc
 
 
 
-router.post('/iniciar-firma', async (req,res) => {
+
+
+router.post('/firma', async (req,res) => {
     try {
-		await docusign.iniciarFirma(req, res);
+		await docusign.firma(req, res);
 	} catch (error) {
 		console.error('Error al registrar firma:', error);
 		res.status(500).send('Error al registrar firma');

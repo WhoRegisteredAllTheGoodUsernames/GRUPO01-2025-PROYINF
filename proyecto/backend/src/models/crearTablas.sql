@@ -185,6 +185,11 @@ ALTER TABLE ONLY "simulacion-prestamo"
 ALTER TABLE prestamo
 ADD COLUMN IF NOT EXISTS "seguro" character varying(50) NOT NULL DEFAULT 'Sin seguro';
 
+-- Añade las columnas de envelope_id y estado_firma, son para el proceso de firma virtual
+ALTER TABLE prestamo
+ADD COLUMN IF NOT EXISTS envelope_id VARCHAR(255) UNIQUE,
+ADD COLUMN IF NOT EXISTS estado_firma VARCHAR(50) DEFAULT 'PENDIENTE';
+
 
 
 -- Esto se borrará después, pero es mientras no tengamos el webeo del scoring implementado

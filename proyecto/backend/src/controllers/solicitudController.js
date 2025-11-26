@@ -219,6 +219,26 @@ const procesarConfirmacion = async (req, res) => {
     }
 
     const simulacion = sim.rows[0];
+    
+    //---------- bloque para obtener los datos del cliente cuando se confirme el prestamo por scoring-------------------------
+    //        necesarios para pasar a la firma virtual
+    const clienteData = await pool.query(
+      `SELECT 
+          c.scoring, 
+          c.email, 
+          u."primer-nombre", 
+          u."apellido-paterno"
+      FROM cliente c
+      INNER JOIN "user" u ON c.rut = u.rut 
+      WHERE c.rut = $1`, 
+      [rutCliente]
+    );
+    if (clienteData.rows.length === 0){
+      return res.status(404).json({error : 'Datos del cliente no encontrados'} );
+    }
+    const datosCliente = clienteData.rows[0];
+    // -------------------------------------------------------------------------------------------------------
+    
     // 🧩 Normalizar valores cualitativos (seguro, rubro, etc.) usando el mismo diccionario global
     const valoresCualitativos = modeloScoring.valoresCualitativos;
 
@@ -277,6 +297,11 @@ const procesarConfirmacion = async (req, res) => {
 
     const nuevoPrestamo = insertResult.rows[0];
 
+
+// DEJE ESTE BLOQUE COMENTADO PARA PODER AGREGAR TAMBIEN LOS DATOS DEL CLIENTE
+// SON NECESARIOS EN LA FIRMA VIRTUAL
+/*
+
     console.log(`💾 Registro insertado en tabla 'prestamo' con estado: ${estadoAprobacion}`);
 
     // 4️⃣ Devolver resultado desde la tabla prestamo
@@ -293,6 +318,28 @@ const procesarConfirmacion = async (req, res) => {
             stack: error.stack            // 👈 opcional: muestra la traza completa
         });
     }
+
+
+*/
+// Bloque para obtener los datos desde la tabla prestamo y los datos del cliente asociado
+    const prestamoConDatosCliente = {
+      ...nuevoPrestamo,
+      nombre_cliente :`${datosCliente['primer-nombre']} ${datosCliente['apellido-paterno']}`, 
+      email_cliente : datosCliente.email
+    };
+    console.log("Registro insertado, enviando respuesta con datos de cliente")
+    res.status(200).json({
+      message: `Solicitud procesada: ${estadoAprobacion}`,
+      prestamo: prestamoConDatosCliente
+    });
+  }catch {
+    console.error("Erroe en procesarConfirmacion", error);
+    res.status(500).json({
+      error: 'error al procesar la confirmacion',
+      detalle: error.message
+    });
+  }
+
 };
 
 

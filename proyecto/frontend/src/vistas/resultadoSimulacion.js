@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { back_dir } from "../backend";
-import logo from "../img/logo.png";
 import Navbar from "./navbar";
 
 export default function ResultadoSimulacion() {

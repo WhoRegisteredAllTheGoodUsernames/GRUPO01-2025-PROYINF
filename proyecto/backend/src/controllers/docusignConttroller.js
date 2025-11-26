@@ -2,6 +2,7 @@
 const docusign = require('docusign-esign');
 const fs = require('fs');
 const path = require('path');
+const pool = require('../db/db');
 
 const DS_CONFIG = {
     integrationKey: process.env.DS_INTEGRATION_KEY, 
@@ -52,8 +53,10 @@ async function getApiClient() {
 const { getDocumentBase64 } = require('../utils/pdfBase64');
 
 // Funcion para la vista de iniciarFirma
-async function iniciarFirma(req, res) {
-    const {emailCliente, nombreCliente} = req.body;
+async function firma(req, res) {
+    // Necesita el nombre del cliente, el email y el id del prestamo
+    // en la tabla prestamo se guarda el envelopeId y el estado de la firma
+    const {emailCliente, nombreCliente, idSolicitud} = req.body;
 
     if(!emailCliente || !nombreCliente){
         return res.status(400).send({error: 'Faltan email y nombre Cliente'})
@@ -140,6 +143,12 @@ async function iniciarFirma(req, res) {
             envelopeDefinition: env
         });
 
+        // Si el envelope se crea correctamente, se guarda su id en prestamo y el estado de firma en enviado
+        const nuevoEnvelopeId = results.envelopeId;
+        const updateQuery = `UPDATE prestamo SET envelope_id = $1, estado_firma = 'ENVIADO' WHERE id = $2`;
+        await pool.query(updateQuery, [nuevoEnvelopeId, idSolicitud]);
+
+        console.log(`Solicitud ID ${idSolicitud} actualizada con Envelope ID: ${nuevoEnvelopeId}`);
         console.log('Sobre enviado! Envelope ID:', results.envelopeId);
         // el envelopeId tenemos que guardarlo en la BDD para relacionarlo al proceso de firma del credito que corresponda
         // Respondemos al frontend que todo salió bien
@@ -165,11 +174,21 @@ async function recibirWebhook(req, res) {
     const payload = req.body;
     console.log('¡Webhook de DocuSign recibido!',JSON.stringify(payload, null, 2));
     if (payload.event === 'envelope-completed') {
+        // Cuando la firma es completada, se actualiza el estado a FIRMADO
         const envelopeId = payload.data.envelopeId;
+        const envId = payload.data.envelopeId;
+        const query = `UPDATE prestamo SET estado_firma = 'FIRMADO' WHERE envelope_id = $1`;
+        await pool.query(query, [envId]);
+        console.log(`Solicitud asociada al sobre ${envId} marcada como FIRMADO.`);
         console.log(`Proceso de firma ${envelopeId} exitosa.`);
     } else if (payload.event === 'envelope-declined') {
+        // Si la firma es rechazada, se actualiza estado_firma como RECHAZADO
         const envelopeId = payload.data.envelopeId;
-        console.log('Proceso de firma ${envelopeId} rechazada.');
+        const envId = payload.data.envelopeId;
+        const query = `UPDATE prestamo SET estado_firma = 'RECHAZADO' WHERE envelope_id = $1`;
+        await pool.query(query, [envId]);
+        console.log(`Solicitud asociada al sobre ${envId} marcada como RECHAZADO`);
+        console.log(`Proceso de firma ${envelopeId} exitosa.`);
     } else {
         // por como lo puse deberia avisar solamente si es firmado correctamente o es rechazado, pero por si acaso le puse eso
         // cualquier cosa se puede cambiar desde la configuracion de la API en la pagina
@@ -180,5 +199,5 @@ async function recibirWebhook(req, res) {
 }
 
 module.exports = { 
-    iniciarFirma, recibirWebhook
+    firma, recibirWebhook
 }
