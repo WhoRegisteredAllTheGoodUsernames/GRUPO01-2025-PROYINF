@@ -8,6 +8,9 @@ import Solicitud from './vistas/solicitud';
 import DatosClienteSolicitud from "./vistas/DatosClienteSolicitud";
 import ConfirmarSolicitud from "./vistas/ConfirmarSolicitud";
 import IniciarFirma from './vistas/iniciarFirma';
+import HistorialSimulaciones from './vistas/HistorialSimulaciones';
+import HistorialPrestamos from './vistas/HistorialPrestamos';
+
 
 //import logo from './logo.svg';
 import './App.css';
@@ -30,6 +33,9 @@ function App() {
 				<Route path="/solicitud/:idSimulacion/datos" element={<DatosClienteSolicitud />} />
 				<Route path="/solicitud/:idSimulacion/confirmar" element={<ConfirmarSolicitud />} />
 				<Route path="/iniciar-firma" element={<IniciarFirma/>}/>
+				<Route path="/historialSimulaciones" element={<HistorialSimulaciones />} />
+				<Route path="/historialPrestamos" element={<HistorialPrestamos />} />
+
 			</Routes>
 	  </Router>
   );

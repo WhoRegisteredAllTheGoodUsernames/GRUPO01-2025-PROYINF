@@ -21,9 +21,11 @@ import React , { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const dirs = [
-  	{path: "simulacion", label: "Simular préstamo"},
-  	//{ path: "mod_scoring", label: "Scoring" }, este es el boton de scoring creo
+  	{ path: "simulacion", label: "Simular préstamo" },
+  	{ path: "historialSimulaciones", label: "Historial de simulaciones" },
+	{ path: "historialPrestamos", label: "Mis créditos" },
 ];
+
 
 export default function Index() {
 	// Agregado para que detecte que el usuario inicio la sesion, ocupando lo que ya habia que se guardaba en cookies

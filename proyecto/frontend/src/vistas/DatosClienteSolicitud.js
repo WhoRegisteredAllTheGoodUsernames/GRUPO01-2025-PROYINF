@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { back_dir } from "../backend";
-import logo from "../img/logo.png";
+import Navbar from "./navbar";
 
 export default function DatosClienteSolicitud() {
   const { idSimulacion } = useParams();
@@ -92,30 +92,7 @@ export default function DatosClienteSolicitud() {
       }}
     >
       {/* Header */}
-      <header
-        style={{
-          backgroundColor: "#1a1f3c",
-          color: "white",
-          padding: "20px 40px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <img src={logo} alt="Logo" style={{ height: "40px" }} />
-        <h2>Actualizar datos del cliente</h2>
-        <a
-          href="/logout"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "bold",
-            fontSize: "16px",
-          }}
-        >
-          Cerrar sesión
-        </a>
-      </header>
+      <Navbar />
 
       {/* Formulario */}
       <main

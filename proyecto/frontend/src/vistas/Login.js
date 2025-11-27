@@ -23,9 +23,11 @@ export default function Login() {
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Error al iniciar sesión");
+        const data = await res.json();
+        setError(data.error || "Error al iniciar sesión");
+        return;
       }
+
 
       const data = await res.json();
       if (data.ok) {

@@ -61,6 +61,18 @@ export default function Navbar() {
             {/* Enlaces */}
             <div style={{display: "flex", gap: "clamp(15px, 3vw, 20px)", alignItems: "center", flexWrap: "wrap"}}>
                 <Link 
+                    to="/" 
+                    style={{ 
+                        color: "white", 
+                        textDecoration: "none", 
+                        fontSize: "clamp(14px, 2vw, 17px)", 
+                        whiteSpace: "nowrap",
+                        fontWeight: "bold"
+                    }}
+                >
+                    Inicio
+                </Link>
+                <Link 
                     to="/mod_scoring"
                     style={{ 
                         color: "white",

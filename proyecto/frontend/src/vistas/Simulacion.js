@@ -1,6 +1,5 @@
 import { back_dir } from "../backend";
 import { useState } from "react";
-import logo from "../img/logo.png";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
 
