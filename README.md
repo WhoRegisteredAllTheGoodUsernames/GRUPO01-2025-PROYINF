@@ -31,3 +31,4 @@ Nótese que al ejecutar la vista de desarrollo (con los comandos en el README de
 En caso de querer usar distintos hosts o puertos, cambiar los archivos ```./frontend/src/backend.js``` (con los datos para que el frontend se conecte al backend) y ```./proyecto/src/routes/frontend.js``` (para que el backend se conecte con el frontend).
 
 
+
