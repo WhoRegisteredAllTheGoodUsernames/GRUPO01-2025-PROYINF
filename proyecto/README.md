@@ -18,6 +18,9 @@ recibir el webhook de la api. El tema es que cada cuenta gratis de ngrok, tiene 
 que alguno de nosotros lo fuera a probar. Descarguense ngrok y despues me piden el token para que lo conecten a mi cuenta, para no tener que cambiar el link
 en la config de la API. tambien pidanme los archivos de la api para que funcione, pq no estoy seguro si subirlos aca o no
 
+# Instrucciones adicionales:
+1. Recordar seguir instrucciones respecto a la key y el .env conversadas por discord para ahcer funcionar la HU 5
+2. El video se encuentra en el readme general (un directorio atrás)
 
 # Aplicación Node.js con Docker y PostgreSQL
 
@@ -84,3 +87,4 @@ Para reiniciar un servicio específico:
 Para detener todos los contenedores sin eliminar volúmenes:
 
 `$ docker compose down`
+
