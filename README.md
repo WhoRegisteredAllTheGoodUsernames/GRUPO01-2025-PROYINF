@@ -1,4 +1,4 @@
-# Grupo 1
+<img width="73" height="16" alt="image" src="https://github.com/user-attachments/assets/ec6ad39a-0a05-49b4-8aa6-5e68cd50015a" /><img width="73" height="16" alt="image" src="https://github.com/user-attachments/assets/ec6ad39a-0a05-49b4-8aa6-5e68cd50015a" /># Grupo 1 (2025-2)
 
 Este es el repositorio del *Grupo 1*, cuyos integrantes son:
 
@@ -7,9 +7,24 @@ Este es el repositorio del *Grupo 1*, cuyos integrantes son:
 * Paula Vergara - 20237355-4
 * Nicolás Chehade - 202373508-6
 * **Tutor**: Matías Barrera
+
+# Grupo 11 (2026-1)
+
+Este es el repositorio del *Grupo 11*, cuyos integrantes son:
+
+* Karina Aliaga - 202373556-6
+* Camilo Valdebenito - 202373538-8
+* Paula Vergara - 20237355-4
+* Nicolás Chehade - 202373508-6
+* Sergio Cárcamo - 202273512-0
+* **Ayudante**: Miguel Huerta
+
+La nueva conformación del grupo seguirá con el trabajo hecho en este repositorio.
+
 # Instrucciones adicionales:
 1. Recordar seguir instrucciones respecto a la key y el .env conversadas por discord para hacer funcionar la HU 5 (hay más detalles en `./proyecto/README.md`)
 2. El video se encuentra un poco más abajo en este `README`
+
 ## Wiki
 
 Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/WhoRegisteredAllTheGoodUsernames/GRUPO01-2025-PROYINF/wiki)
