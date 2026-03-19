@@ -1,4 +1,4 @@
-<img width="73" height="16" alt="image" src="https://github.com/user-attachments/assets/ec6ad39a-0a05-49b4-8aa6-5e68cd50015a" /><img width="73" height="16" alt="image" src="https://github.com/user-attachments/assets/ec6ad39a-0a05-49b4-8aa6-5e68cd50015a" /># Grupo 1 (2025-2)
+# Grupo 1 (2025-2)
 
 Este es el repositorio del *Grupo 1*, cuyos integrantes son:
 
@@ -31,9 +31,9 @@ Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/WhoReg
 
 ## Videos
 
-* [Video presentación cliente](https://aula.usm.cl/mod/resource/view.php?id=6926137)
-* [Video del prototipo (hito 3)](https://youtu.be/zCmSmqjFevc)
-* [Video del resultado final (hito 5)](https://youtu.be/u4ItLvlS53c?si=VDi9HZGqPnAoXMgc)
+* [Video presentación cliente (2025-2)](https://aula.usm.cl/mod/resource/view.php?id=6926137)
+* [Video del prototipo (2025-2: hito 3)](https://youtu.be/zCmSmqjFevc)
+* [Video del resultado final (2025-2: hito 5)](https://youtu.be/u4ItLvlS53c?si=VDi9HZGqPnAoXMgc)
 <!--* [Video presentación avance 1](https://www.youtube.com/)
 * Etc ...-->
 
